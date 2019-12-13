@@ -1,0 +1,14 @@
+export PATH=$PATH:/usr/hdp/current/kafka-broker/bin
+
+#Criando topico
+kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic abhinav_test
+
+#Checando se foi criado
+kafka-topics.sh  --list --zookeeper localhost:2181
+
+#Encontrar endereço ip de um broker do zookeeper-client  
+get /brokers/id/0
+
+kafka-console-producer.sh --broker-list ip-172-31-13-154.ec2.internal:6667 --topic teste
+
+kafka-console-consumer.sh --zookeeper localhost:2181 --topic teste_teste --from-beginning
