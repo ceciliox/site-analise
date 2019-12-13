@@ -1,0 +1,55 @@
+#Clonar repositório:
+
+git clone https://github.com/ceciliox/site-analise.git
+
+#Exportar binários Kafka
+
+export PATH=$PATH:/dir/kafka-broker/bin
+
+#Criar tópico kafka que vai enviar os dados do dataset
+
+#O Zookeeper controla o status dos nós do cluster Kafka e também acompanha os tópicos, permite que vários clientes executem leituras e gravações simultâneas e atua como um serviço de configuração
+
+#localhost deve ser trocado pelo hostname do zookeeper que esta rodando na maquina
+
+kafka-topics.sh --create --zookeeper cxln2.c.thelab-240901.internal:2181 --replication-factor 1 --partitions 1 --topic order-data
+
+#caminho da pasta kafka
+/home/ceciliox8738/site-analise/kafka
+
+#Comandos para encontrar ip de um broker zookeeper e usá-lo no comando abaixo
+zookeeper-client 
+ls /brokers/ids
+get /brokers/ids/1001
+
+/bin/bash envia_dados.sh ../dados/order_data/ cxln3.c.thelab-240901.internal:6667 order-data
+--------------
+Comandos executados em outro terminal(2):
+#Um novo  tópico kafka é criado para os dados que serão processados no spark streaming
+
+kafka-topics.sh --create --zookeeper cxln2.c.thelab-240901.internal:2181 --replication-factor 1 --partitions 1 --topic order-data-armazena
+
+#Entrando na pasta spark para rodar o comando que vai processar os dados
+
+cd /home/ceciliox8738/site-analise/spark
+
+#Comando para processar os dados do dataset advindos do tópico kafka
+
+spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.2 spark_streaming_pedido.py cxln2.c.thelab-240901.internal:2181 order-data
+----------------
+Comandos executados em outro terminal(3):
+
+#Entrando na pasta node
+#Instalando dependencias descritas em package.json necessárias
+
+npm install
+
+#Editar index.js para inserir o hostname do servidor zookeeper e escolher a porta do servidor node a qual ira rodar o codigo
+#Depois rodar o servidor
+
+node index.js
+
+#Depois que o servidor for iniciado, acesse http: // CONSOLE_WEB:PORTA para aparecer o grafico em tempo real
+#no projeto:
+
+http://cloudlab.us:3006
