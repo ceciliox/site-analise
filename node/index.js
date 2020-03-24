@@ -12,13 +12,55 @@ var consumer = new HighLevelConsumer(client, payloads);
 var offset = new Offset(client);
 var port = 3006;
 
+const express = require('express');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+  path: '../dados/order_data/out.csv',
+  header: [
+    {id: 'name', title: 'Name'},
+    {id: 'surname', title: 'Surname'},
+    {id: 'age', title: 'delivered'},
+  ]
+});
+
 app.get('/', function(req, res){
     res.sendfile('index.html');
 });
 
 app.get('/botao', function(req, res){
-    res.sendfile('botao.html');
-    console.log(req)
+    //res.sendfile('botao.html');
+    //console.log(req)
+    let data = [
+        {
+          name: 'John',
+          surname: 'Snow',
+          age: 'delivered',
+        }
+      ];
+      for (let index = 0; index < 10000; index++) {
+          var myArray = [
+              "shipped",
+              "processing",
+              "delivered"
+            ];
+            
+          var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
+            
+          json ={
+              name: 'John',
+              surname: 'Snow',
+              age: randomItem,
+          }
+          data.push(json);
+      }
+      //app.get('/', (req, res) =>{
+      
+          csvWriter
+          .writeRecords(data)
+          .then(()=> console.log('The CSV file was written successfully'));
+      //})
+      
+      //app.listen(1111);
 });
 
 io = io.on('connection', function(socket){
