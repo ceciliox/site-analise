@@ -5,8 +5,8 @@ var kafka = require('kafka-node');
 var HighLevelConsumer = kafka.HighLevelConsumer;
 var Offset = kafka.Offset;
 var Client = kafka.Client;
-var topic = 'order-data-armazena';
-var client = new Client('cxln2.c.thelab-240901.internal:2181', "worker-" + Math.floor(Math.random() * 10000));
+var topic = 'order-data-armazena-a';
+var client = new Client('cxln1.c.thelab-240901.internal:2181', "worker-" + Math.floor(Math.random() * 10000));
 var payloads = [{ topic: topic }];
 var consumer = new HighLevelConsumer(client, payloads);
 var offset = new Offset(client);
@@ -14,6 +14,11 @@ var port = 3006;
 
 app.get('/', function(req, res){
     res.sendfile('index.html');
+});
+
+app.get('/botao', function(req, res){
+    res.sendfile('botao.html');
+    console.log(req)
 });
 
 io = io.on('connection', function(socket){
