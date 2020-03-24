@@ -45,12 +45,16 @@ app.get('/botao', function(req, res){
             ];
             
           var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
-            
-          json ={
-              name: 'John',
-              surname: 'Snow',
-              age: randomItem,
-          }
+        
+        var d = new Date();
+        var dNow = new Date();
+        var d = dNow.getFullYear() + '/' + (dNow.getMonth()+1) + '/' + dNow.getDate() + ' ' + dNow.getHours() + ':' + dNow.getMinutes()+ ':' + dNow.getSeconds();
+             json ={
+               name: d,
+               surname: 'Snow',
+               age: randomItem,
+             }
+
           data.push(json);
       }
       //app.get('/', (req, res) =>{
