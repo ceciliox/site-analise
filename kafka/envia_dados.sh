@@ -1,15 +1,16 @@
 #!/bin/bash
 
-
-export PATH=$PATH:/usr/hdp/current/kafka-broker/bin
-ARQUIVOS=$1/*.csv
-for f in $ARQUIVOS
+while :
 do
-    echo "buscando $f arquivos"
-    cat $f | kafka-console-producer.sh --broker-list $2  --topic $3
-    sleep 60
+    export PATH=$PATH:/usr/hdp/current/kafka-broker/bin
+    ARQUIVOS=$1/*.csv
+    for f in $ARQUIVOS
+    do
+        echo "buscando $f arquivos"
+        cat $f | kafka-console-producer.sh --broker-list $2  --topic $3
+        sleep 60
+    done
 done
-
 : '
 export PATH=$PATH:/usr/hdp/current/kafka-broker/bin
 ARQUIVOS=$1/out.csv
