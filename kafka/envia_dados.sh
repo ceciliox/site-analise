@@ -8,7 +8,7 @@ do
     do
         echo "buscando $f arquivos"
         cat $f | kafka-console-producer.sh --broker-list $2  --topic $3
-        sleep 10
+        sleep 30
     done
 done
 : '
